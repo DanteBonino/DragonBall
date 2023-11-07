@@ -1,0 +1,45 @@
+import Guerrero.*
+import Traje.*
+
+const goku 	 = new Guerrero(potencialOfensivo = 100, energiaOriginal = 5000, traje = new Entrenamiento())
+const vegeta = new Guerrero(potencialOfensivo = 80, energiaOriginal = 5000, traje = new Comun(porcentajeDeProteccion = 3))
+const trajeEntrenamientoGastado = new Entrenamiento(desgaste = 100)
+const trajeComunGastado = new Comun(porcentajeDeProteccion = 100, desgaste = 100)
+ 
+describe "Punto 1" {
+
+	test "Vegeta recibe 10 ataques de goku y al comerse la semilla del ermitaño su energia vuelve a la original"{
+		10.times{i =>goku.atacarA(vegeta)}
+		assert.that(vegeta.energiaActual() < vegeta.energiaOriginal())
+		vegeta.comerSemillaDelErmitanio()
+		assert.equals(vegeta.energiaOriginal(), vegeta.energiaActual())
+	}
+}
+
+describe "Punto 2"{
+	test "Goku ataca a vegeta y su energia queda en 4990 y su experiencia en 1" {
+		goku.atacarA(vegeta)
+		assert.equals(1, vegeta.experiencia())
+		assert.equals(4993, vegeta.energiaActual())
+	}
+	
+	test "Experiencia Actual de goku, con un traje de entrenamiento, es el doble de lo que tendría"{
+		assert.equals(0, goku.experiencia())
+		vegeta.atacarA(goku)
+		assert.equals(2, goku.experiencia())
+	}
+	
+	test "Experiencia Actual de vegeta es la misma que tenía antes"{
+		assert.equals(0, vegeta.experiencia())
+	}
+}
+
+describe "Punto 3"{
+	test "Un traje de entrenamiento desgastado no protege"{
+		assert.equals(0,trajeEntrenamientoGastado.protegerDe(1000))
+	}
+	
+	test "Un traje comun desgastado no protege"{
+		assert.equals(0,trajeComunGastado.protegerDe(1000))
+	}
+}
